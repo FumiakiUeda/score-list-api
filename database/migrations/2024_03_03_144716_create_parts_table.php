@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('part');
             $table->integer('score_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
