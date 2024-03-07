@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('composer');
-            $table->string('arranger');
-            $table->integer('publisher');
-            $table->string('note');
+            $table->nullable()->string('name');
+            $table->nullable()->string('composer');
+            $table->nullable()->string('arranger');
+            $table->nullable()->integer('publisher');
+            $table->nullable()->string('note');
             $table->integer('user_id');
             $table->timestamps();
         });
