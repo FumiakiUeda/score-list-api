@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('arranger');
             $table->integer('publisher');
             $table->string('note');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

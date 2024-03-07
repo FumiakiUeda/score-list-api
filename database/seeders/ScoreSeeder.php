@@ -21,6 +21,7 @@ class ScoreSeeder extends Seeder
                 'arranger' => '',
                 'publisher' => 3,
                 'note' => '',
+                'user_id' => 1,
             ],
             [
                 'name' => '吹奏楽のための第1組曲',
@@ -28,6 +29,7 @@ class ScoreSeeder extends Seeder
                 'arranger' => '',
                 'publisher' => 4,
                 'note' => '',
+                'user_id' => 1,
             ],
         ];
         foreach ($scores as $score) {
@@ -37,6 +39,7 @@ class ScoreSeeder extends Seeder
                 'arranger' => $score['arranger'],
                 'publisher' => $score['publisher'],
                 'note' => $score['note'],
+                'user_id' => $score['user_id'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
