@@ -22,5 +22,5 @@ Route::get('/scores', 'App\Http\Controllers\ScoreController@index');
 Route::post('/score', 'App\Http\Controllers\ScoreController@store');
 Route::get('/score/{score:id}', 'App\Http\Controllers\ScoreController@edit');
 Route::patch('/score/{score:id}', 'App\Http\Controllers\ScoreController@update');
-Route::delete('/score/{score:id}', 'App\Http\Controllers\ScoreController@delete');
+Route::delete('/score/{score:id}', 'App\Http\Controllers\ScoreController@destroy');
 
