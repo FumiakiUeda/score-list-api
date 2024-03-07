@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ScoreController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * リソースの一覧を表示する。
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class ScoreController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 新しいリソースを作成するフォームを表示する。
      */
     public function create()
     {
@@ -27,15 +27,25 @@ class ScoreController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成したリソースをストレージに格納する。
      */
     public function store(Request $request)
     {
-        //
+        $score = new Score();
+        $score->name = $request->name;
+        $score->composer = $request->composer;
+        $score->arranger = $request->arranger;
+        $score->publisher = $request->publisher;
+        $score->note = $request->note;
+        $score->user_id = $request->user_id;
+        $score->save();
+        return response()->json([
+            'data' => $score
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * 指定されたリソースを表示する。
      */
     public function show(string $id)
     {
@@ -43,26 +53,36 @@ class ScoreController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 指定したリソースを編集するためのフォームを表示します。
      */
     public function edit(string $id)
     {
-        //
+        $score = Score::find($id);
+        return response()->json([
+            'data' => $score
+        ], 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定されたリソースを更新する。
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Score $score)
     {
-        //
+        $score->fill($request->all());
+        $score->save();
+        return response()->json([
+            'data' => $score
+        ], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定されたリソースをストレージから削除する。
      */
-    public function destroy(string $id)
+    public function destroy(Score $score)
     {
-        //
+        $score->delete();
+        return response()->json([
+            'message' => 'deleted successfully.'
+        ], 200);
     }
 }
