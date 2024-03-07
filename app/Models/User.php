@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -42,4 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    /**
+     * 不足しているパート譜を取得
+     */
+    public function part()
+    {
+        return $this->hasMany(Part::class);
+    }
+    /**
+     * 不足している譜面を取得
+     */
+    public function score()
+    {
+        return $this->hasMany(Score::class);
+    }
 }
