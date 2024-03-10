@@ -24,9 +24,7 @@ class ScoreController extends Controller
         }
 
         // レスポンス
-        return response()->json([
-            'data' => $scores
-        ], 200);
+        return response()->json($scores, 200);
     }
 
     /**
@@ -71,9 +69,7 @@ class ScoreController extends Controller
         isset($score->part);
 
         // レスポンス
-        return response()->json([
-            'data' => $score
-        ], 201);
+        return response()->json($score, 201);
     }
 
     /**
@@ -100,9 +96,7 @@ class ScoreController extends Controller
         isset($score->part);
 
         // レスポンス
-        return response()->json([
-            'data' => $score
-        ], 200);
+        return response()->json($score, 200);
     }
 
     /**
@@ -134,7 +128,7 @@ class ScoreController extends Controller
         if (!empty($request->part)) {
             foreach ($request->part as $value) {
                 $part = new Part();
-                $part->part = $value;
+                $part->part_id = $value;
                 $part->score_id = $score->id;
                 $part->user_id = $score->user_id;
                 $part->save();
@@ -145,9 +139,7 @@ class ScoreController extends Controller
         isset($score->part);
 
         // レスポンス
-        return response()->json([
-            'data' => $score
-        ], 200);
+        return response()->json($score, 200);
     }
 
     /**
