@@ -58,7 +58,7 @@ class ScoreController extends Controller
         if (!empty($request->part)) {
             foreach ($request->part as $value) {
                 $part = new Part();
-                $part->part = $value;
+                $part->part_id = $value;
                 $part->score_id = $score->id;
                 $part->user_id = $score->user_id;
                 $part->save();
