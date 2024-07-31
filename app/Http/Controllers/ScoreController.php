@@ -13,10 +13,10 @@ class ScoreController extends Controller
      *
      * @return \Illuminate\Http\Response 譜面一覧とそのパート情報を含むJSONレスポンス
      */
-    public function index()
+    public function index(Request $request, ?int $per_page = 15)
     {
         // 譜面一覧を取得
-        $scores = Score::all();
+        $scores = Score::paginate($per_page);
 
         // 譜面に対応するパート一覧を取得
         foreach ($scores as $score) {
