@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Score;
 use App\Models\Part;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ScoreController extends Controller
@@ -13,10 +14,13 @@ class ScoreController extends Controller
      *
      * @return \Illuminate\Http\Response 譜面一覧とそのパート情報を含むJSONレスポンス
      */
-    public function index(Request $request, ?int $per_page = 15)
+    public function index(?int $per_page = 15)
     {
+        // ログインユーザーを特定
+        $user_id = Auth::id();
+
         // 譜面一覧を取得
-        $scores = Score::paginate($per_page);
+        $scores = Score::where('user_id', $user_id)->paginate($per_page);
 
         // 譜面に対応するパート一覧を取得
         foreach ($scores as $score) {
