@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ScoreController extends Controller
 {
     /**
-     * 譜面の一覧を取得し、そのパート情報も含めて返します。
+     * 譜面の一覧を取得し、そのパート情報も含めて返す。
      *
      * @return \Illuminate\Http\Response 譜面一覧とそのパート情報を含むJSONレスポンス
      */
@@ -40,14 +40,17 @@ class ScoreController extends Controller
     }
 
     /**
-     * 新しい譜面を作成し、ストレージに保存します。
-     * リクエストに含まれる情報に基づいて譜面とそのパート情報を保存します。
+     * 新しい譜面を作成し、ストレージに保存する。
+     * リクエストに含まれる情報に基づいて譜面とそのパート情報を保存する。
      *
      * @param \Illuminate\Http\Request $request 新しい譜面の情報を含むHTTPリクエスト
      * @return \Illuminate\Http\Response 作成された譜面情報とそのパート情報を含むJSONレスポンス
      */
     public function store(Request $request)
     {
+        // ログインユーザーを特定
+        $user_id = Auth::id();
+
         // リクエストの内容を譜面テーブルへ保存
         $score = new Score();
         $score->name = $request->name;
@@ -55,7 +58,7 @@ class ScoreController extends Controller
         $score->arranger = $request->arranger;
         $score->publisher = $request->publisher;
         $score->note = $request->note;
-        $score->user_id = $request->user_id;
+        $score->user_id = $user_id;
         $score->save();
 
         // リクエストの内容をパートテーブルへ保存
@@ -64,7 +67,7 @@ class ScoreController extends Controller
                 $part = new Part();
                 $part->part_id = $value;
                 $part->score_id = $score->id;
-                $part->user_id = $score->user_id;
+                $part->user_id = $user_id;
                 $part->save();
             }
         }
@@ -85,8 +88,8 @@ class ScoreController extends Controller
     }
 
     /**
-     * 指定されたIDの譜面を編集するための情報を取得します。
-     * 譜面に対応するパート情報も含めて返します。
+     * 指定されたIDの譜面を編集するための情報を取得する。
+     * 譜面に対応するパート情報も含めて返す。
      *
      * @param string $id 編集する譜面のID
      * @return \Illuminate\Http\Response 譜面情報とそのパート情報を含むJSONレスポンス
@@ -104,8 +107,8 @@ class ScoreController extends Controller
     }
 
     /**
-     * 指定された譜面を更新します。
-     * リクエストに含まれる情報に基づいて譜面とそのパート情報を更新します。
+     * 指定された譜面を更新する。
+     * リクエストに含まれる情報に基づいて譜面とそのパート情報を更新する。
      *
      * @param \Illuminate\Http\Request $request 更新する情報を含むHTTPリクエスト
      * @param \App\Models\Score $score 更新する譜面のインスタンス
@@ -113,18 +116,21 @@ class ScoreController extends Controller
      */
     public function update(Request $request, Score $score)
     {
+        // ログインユーザーを特定
+        $user_id = Auth::id();
+
         // リクエストの内容を譜面テーブルへ保存
         $score->name = $request->name;
         $score->composer = $request->composer;
         $score->arranger = $request->arranger;
         $score->publisher = $request->publisher;
         $score->note = $request->note;
-        $score->user_id = $request->user_id;
+        $score->user_id = $user_id;
         $score->save();
 
         // 既存のパート情報を先に削除
         Part::where([
-            'user_id' => $score->user_id,
+            'user_id' => $user_id,
             'score_id' => $score->id,
         ])->delete();
 
@@ -134,7 +140,7 @@ class ScoreController extends Controller
                 $part = new Part();
                 $part->part_id = $value;
                 $part->score_id = $score->id;
-                $part->user_id = $score->user_id;
+                $part->user_id = $user_id;
                 $part->save();
             }
         }
@@ -147,8 +153,8 @@ class ScoreController extends Controller
     }
 
     /**
-     * 指定された譜面をストレージから削除します。
-     * 譜面に対応するパートも併せて削除します。
+     * 指定された譜面をストレージから削除する。
+     * 譜面に対応するパートも併せて削除する。
      *
      * @param \App\Models\Score $score 削除する譜面のインスタンス
      * @return \Illuminate\Http\Response 削除操作の成功メッセージを含むJSONレスポンス
