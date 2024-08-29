@@ -16,6 +16,11 @@ class ScoreController extends Controller
      */
     public function index(?int $per_page = 15)
     {
+        // ログイン中のユーザーのみがアクセス可能
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized access'], 401);
+        }
+
         // ログインユーザーを特定
         $user_id = Auth::id();
 
@@ -48,6 +53,11 @@ class ScoreController extends Controller
      */
     public function store(Request $request)
     {
+        // ログイン中のユーザーのみがアクセス可能
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized access'], 401);
+        }
+
         // ログインユーザーを特定
         $user_id = Auth::id();
 
@@ -96,8 +106,18 @@ class ScoreController extends Controller
      */
     public function edit(string $id)
     {
+        // ログイン中のユーザーのみが編集可能
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized access'], 401);
+        }
+
         // 該当のIDを検索
-        $score = Score::find($id);
+        $score = Score::findOrFail($id);
+
+        // ユーザーIDが一致するか確認
+        if (Auth::id() !== $score->user_id) {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
 
         // 該当の譜面に対応するパートがある場合は含める
         isset($score->part);
@@ -116,6 +136,11 @@ class ScoreController extends Controller
      */
     public function update(Request $request, Score $score)
     {
+        // ログイン中のユーザーのみが更新可能
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized access'], 401);
+        }
+
         // ログインユーザーを特定
         $user_id = Auth::id();
 
@@ -161,6 +186,16 @@ class ScoreController extends Controller
      */
     public function destroy(Score $score)
     {
+        // ログイン中のユーザーのみが削除可能
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized access'], 401);
+        }
+
+        // ユーザーIDが一致するか確認
+        if (Auth::id() !== $score->user_id) {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
         // 該当のレコードを削除
         $score->delete();
 
