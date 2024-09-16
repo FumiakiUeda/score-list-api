@@ -25,7 +25,9 @@ class ScoreController extends Controller
         $user_id = Auth::id();
 
         // 譜面一覧を取得
-        $scores = Score::where('user_id', $user_id)->paginate($per_page);
+        $scores = Score::where('user_id', $user_id)
+            ->orderBy('id', 'desc')
+            ->paginate($per_page);
 
         // 譜面に対応するパート一覧を取得
         foreach ($scores as $score) {
