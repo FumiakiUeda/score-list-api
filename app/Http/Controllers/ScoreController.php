@@ -26,9 +26,21 @@ class ScoreController extends Controller
         $user_id = Auth::id();
 
         // 譜面一覧を取得
-        $scores = Score::where('user_id', $user_id)
-            ->orderBy($request->sort, $request->order)
-            ->paginate($per_page);
+        if (!empty($request->search)) {
+            $search = $request->search;
+            $scores = Score::where('user_id', $user_id)
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('composer', 'LIKE', '%' . $search . '%')
+                        ->orWhere('arranger', 'LIKE', '%' . $search . '%');
+                })
+                ->orderBy($request->sort, $request->order)
+                ->paginate($per_page);
+        } else {
+            $scores = Score::where('user_id', $user_id)
+                ->orderBy($request->sort, $request->order)
+                ->paginate($per_page);
+        }
 
         // 譜面に対応するパート一覧を取得
         foreach ($scores as $score) {
