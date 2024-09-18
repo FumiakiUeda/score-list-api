@@ -12,9 +12,10 @@ class ScoreController extends Controller
     /**
      * 譜面の一覧を取得し、そのパート情報も含めて返す。
      *
+     * @param \Illuminate\Http\Request $request ページ番号、並びの基準、降順昇順
      * @return \Illuminate\Http\Response 譜面一覧とそのパート情報を含むJSONレスポンス
      */
-    public function index(?int $per_page = 15)
+    public function index(Request $request, ?int $per_page = 15)
     {
         // ログイン中のユーザーのみがアクセス可能
         if (!Auth::check()) {
@@ -26,7 +27,7 @@ class ScoreController extends Controller
 
         // 譜面一覧を取得
         $scores = Score::where('user_id', $user_id)
-            ->orderBy('id', 'desc')
+            ->orderBy($request->sort, $request->order)
             ->paginate($per_page);
 
         // 譜面に対応するパート一覧を取得
