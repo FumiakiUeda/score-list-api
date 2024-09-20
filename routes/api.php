@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 // scoresのCRUDのルーティング
-Route::get('/scores/{per_page?}', 'App\Http\Controllers\ScoreController@index');
+Route::get('/scores', 'App\Http\Controllers\ScoreController@index');
 Route::post('/score', 'App\Http\Controllers\ScoreController@store');
 Route::get('/score/{score:id}', 'App\Http\Controllers\ScoreController@edit');
 Route::patch('/score/{score:id}', 'App\Http\Controllers\ScoreController@update');

@@ -15,7 +15,7 @@ class ScoreController extends Controller
      * @param \Illuminate\Http\Request $request ページ番号、並びの基準、降順昇順
      * @return \Illuminate\Http\Response 譜面一覧とそのパート情報を含むJSONレスポンス
      */
-    public function index(Request $request, ?int $per_page = 15)
+    public function index(Request $request)
     {
         // ログイン中のユーザーのみがアクセス可能
         if (!Auth::check()) {
@@ -24,6 +24,11 @@ class ScoreController extends Controller
 
         // ログインユーザーを特定
         $user_id = Auth::id();
+
+        // 必須パラメーターのデフォルトを指定
+        $per_page = !empty($request->per_page) ? $request->per_page : 15;
+        $sort = !empty($request->sort) ? $request->sort : 'id';
+        $order = !empty($request->order) ? $request->order : 'asc';
 
         // 譜面一覧を取得
         if (!empty($request->search)) {
@@ -34,11 +39,11 @@ class ScoreController extends Controller
                         ->orWhere('composer', 'LIKE', '%' . $search . '%')
                         ->orWhere('arranger', 'LIKE', '%' . $search . '%');
                 })
-                ->orderBy($request->sort, $request->order)
+                ->orderBy($sort, $order)
                 ->paginate($per_page);
         } else {
             $scores = Score::where('user_id', $user_id)
-                ->orderBy($request->sort, $request->order)
+                ->orderBy($sort, $order)
                 ->paginate($per_page);
         }
 
