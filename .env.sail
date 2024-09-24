@@ -1,4 +1,4 @@
-APP_NAME=ScoreListAPI
+APP_NAME=譜面リスト作成ツール
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
@@ -36,7 +36,7 @@ MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="info@umkz.net"
+MAIL_FROM_ADDRESS="score@mail.umkz.net"
 MAIL_FROM_NAME="${APP_NAME}"
 
 AWS_ACCESS_KEY_ID=

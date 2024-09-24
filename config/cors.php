@@ -15,20 +15,20 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    'paths' => ['*'], // CORSを許可するパス
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // 許可するHTTPメソッド
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')], // 許可するオリジン。サーバードメインを指定するか、テスト用に '*' を使用できる。
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // 許可するヘッダー
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => true, // クッキーや認証情報を使用する場合はtrueにする
 
 ];
