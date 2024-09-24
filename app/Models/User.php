@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,11 +52,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Part::class);
     }
+
     /**
      * 不足している譜面を取得
      */
     public function score()
     {
         return $this->hasMany(Score::class);
+    }
+    
+    /**
+     * パスワード再設定メールをカスタマイズ
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
